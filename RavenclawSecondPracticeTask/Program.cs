@@ -4,27 +4,24 @@ namespace RavenclawSecondPracticeTask
 {
     class Data
     {
-        private int maxAdress;
-        private string[] Names = new string[1];
+        private int maxAdress;     
         private User[] Users = new User[1];
 
         public Data()
         {
             maxAdress = 0;
-
         }
 
         private void changeName(int adress, string name)
         {
-            Console.WriteLine("Username in " + adress + " adress changed from " + Names[adress] + " to " + name);
+            Console.WriteLine("Username in " + adress + " adress changed from " + Users[adress].getUsername() + " to " + name);
+            Users[adress].setUsername(name);          
             Users[adress].setUsername(name);
-            Names[adress] = name;
         }
 
         private void setMaxAdress(int adress)
         {
-            maxAdress = adress;
-            Array.Resize(ref Names, adress + 1);
+            maxAdress = adress;        
             Array.Resize(ref Users, adress + 1);
         }
 
@@ -32,17 +29,14 @@ namespace RavenclawSecondPracticeTask
         {
             if (adress <= maxAdress && Users[adress] != null)
             {
-                Console.WriteLine("In adress " + adress + " name of user is " + Names[adress]);
-                return Names[adress];
+                Console.WriteLine("In adress " + adress + " name of user is " + Users[adress].getUsername());
+                return Users[adress].getUsername();
             }
             else
             {
                 Console.WriteLine("Eror invalid adress");
                 return "";
-            }
-              
-
-            
+            }                      
         }
 
         public void Update(int adress , int newAdress , string newName)
@@ -66,25 +60,23 @@ namespace RavenclawSecondPracticeTask
                             setMaxAdress(newAdress);
 
                         Users[newAdress] = Users[adress];
+                                            
+                        Users[newAdress].setUsername(Users[adress].getUsername());
                         Users[adress] = null;
-                        Names[newAdress] = Names[adress];
-                        Names[adress] = "";
-
-                        Console.WriteLine("Changed User's adress " + adress + " with username " + Names[newAdress] + " to new adress " + newAdress);
+                                           
+                        Console.WriteLine("Changed User's adress " + adress + " with username " + Users[newAdress].getUsername() + " to new adress " + newAdress);
 
                     }
 
-                    if (Names[newAdress] != newName)
+                    if (Users[newAdress].getUsername() != newName)
                     {
                        changeName(newAdress, newName);
                     }
 
                 }
-
             }
             else
-                Console.WriteLine("Eror invalid adress");
-            
+                Console.WriteLine("Eror invalid adress");      
         }
 
         private int getNextAdress()
@@ -93,7 +85,7 @@ namespace RavenclawSecondPracticeTask
             bool t = false;
 
             for (int i = 0; i <= maxAdress; i++)
-                if (Names[i] == "")
+                if (Users[i] == null)
                 {
                     t = true;
                     ad = i;
@@ -112,16 +104,13 @@ namespace RavenclawSecondPracticeTask
             if (getNextAdress() > maxAdress)
             {
                 aUser = getNextAdress();
-                Array.Resize(ref Names, aUser + 1);
                 Array.Resize(ref Users, aUser + 1);
                 maxAdress++;
             }
             else
                 aUser = getNextAdress();
 
-            Console.WriteLine("Created User in " + aUser + " adress");
-
-            Names[aUser] = "New user";
+            Console.WriteLine("Created User in " + aUser + " adress");         
 
             Users[aUser] = new User();
 
@@ -129,7 +118,6 @@ namespace RavenclawSecondPracticeTask
 
             return aUser;
         }
-
     }
 
     class User
@@ -137,19 +125,13 @@ namespace RavenclawSecondPracticeTask
         private string _username;
         private int _adress;
 
-
         public User() {
 
         }
         
         public void setUsername(string username)
-        {
-            if (username != "")
-            {
-                _username = username;
-                
-            }
-           
+        {       
+            _username = username;                      
         }
 
         public string getUsername()
@@ -173,8 +155,6 @@ namespace RavenclawSecondPracticeTask
             else
                 Console.WriteLine("Error invalid adress");
         }
-
-
     }
 
     class Program
